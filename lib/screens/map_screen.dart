@@ -109,18 +109,6 @@ class _YandexAppPageState extends State<YandexAppPage> {
               const SizedBox(height: 10),
               FloatingActionButton(
                 onPressed: state.latLongStatus.isLoading ? null : ()async {
-                  // controller.moveCamera(
-                  //   animation: animation,
-                  //   CameraUpdate.newCameraPosition(
-                  //     CameraPosition(
-                  //       zoom: 18,
-                  //       target: Point(
-                  //         latitude: widget.latLong.lat,
-                  //         longitude: widget.latLong.long,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
                   final mediaQuery = MediaQuery.of(context);
                   final height = mapKey.currentContext!.size!.height *
                       mediaQuery.devicePixelRatio;
@@ -129,10 +117,22 @@ class _YandexAppPageState extends State<YandexAppPage> {
 
                   await controller.toggleUserLayer(
                       visible: true,
-                      autoZoomEnabled: true,
                       anchor: UserLocationAnchor(
                           course: Offset(0.5 * width, 0.5 * height),
                           normal: Offset(0.5 * width, 0.5 * height)));
+                  controller.moveCamera(
+                    animation: animation,
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        zoom: 18,
+                        target: Point(
+                          latitude: widget.latLong.lat,
+                          longitude: widget.latLong.long,
+                        ),
+                      ),
+                    ),
+                  );
+
                 },
                 child: const Icon(Icons.my_location),
               ),
