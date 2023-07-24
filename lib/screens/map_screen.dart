@@ -4,6 +4,9 @@ import 'package:yandex_mapexample/bloc/lat_long_bloc/lat_long_bloc.dart';
 import 'package:yandex_mapexample/models/lat_long.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 class YandexAppPage extends StatefulWidget {
   final LatLong latLong;
 
@@ -57,21 +60,21 @@ class _YandexAppPageState extends State<YandexAppPage> {
         return Scaffold(
           key: mapKey,
           body: YandexMap(
-            // mapObjects: mapObjects,
+            mapObjects: mapObjects,
             onMapCreated: (YandexMapController yandexMapController) async {
               controller = yandexMapController;
-              // controller.moveCamera(
-              //   animation: animation,
-              //   CameraUpdate.newCameraPosition(
-              //     CameraPosition(
-              //       zoom: 18,
-              //       target: Point(
-              //         latitude: widget.latLong.lat,
-              //         longitude: widget.latLong.long,
-              //       ),
-              //     ),
-              //   ),
-              // );
+// controller.moveCamera(
+//   animation: animation,
+//   CameraUpdate.newCameraPosition(
+//     CameraPosition(
+//       zoom: 18,
+//       target: Point(
+//         latitude: widget.latLong.lat,
+//         longitude: widget.latLong.long,
+//       ),
+//     ),
+//   ),
+// );
               onUserLocationAdded:
               (UserLocationView view) async {
                 return view.copyWith(
@@ -108,32 +111,33 @@ class _YandexAppPageState extends State<YandexAppPage> {
               ),
               const SizedBox(height: 10),
               FloatingActionButton(
-                onPressed: state.latLongStatus.isLoading ? null : ()async {
-                  final mediaQuery = MediaQuery.of(context);
-                  final height = mapKey.currentContext!.size!.height *
-                      mediaQuery.devicePixelRatio;
-                  final width = mapKey.currentContext!.size!.width *
-                      mediaQuery.devicePixelRatio;
+                onPressed: state.latLongStatus.isLoading
+                    ? null
+                    : () async {
+                        final mediaQuery = MediaQuery.of(context);
+                        final height = mapKey.currentContext!.size!.height *
+                            mediaQuery.devicePixelRatio;
+                        final width = mapKey.currentContext!.size!.width *
+                            mediaQuery.devicePixelRatio;
 
-                  await controller.toggleUserLayer(
-                      visible: true,
-                      anchor: UserLocationAnchor(
-                          course: Offset(0.5 * width, 0.5 * height),
-                          normal: Offset(0.5 * width, 0.5 * height)));
-                  controller.moveCamera(
-                    animation: animation,
-                    CameraUpdate.newCameraPosition(
-                      CameraPosition(
-                        zoom: 18,
-                        target: Point(
-                          latitude: widget.latLong.lat,
-                          longitude: widget.latLong.long,
-                        ),
-                      ),
-                    ),
-                  );
-
-                },
+                        await controller.toggleUserLayer(
+                            visible: true,
+                            anchor: UserLocationAnchor(
+                                course: Offset(0.5 * width, 0.5 * height),
+                                normal: Offset(0.5 * width, 0.5 * height)));
+                        controller.moveCamera(
+                          animation: animation,
+                          CameraUpdate.newCameraPosition(
+                            CameraPosition(
+                              zoom: 18,
+                              target: Point(
+                                latitude: widget.latLong.lat,
+                                longitude: widget.latLong.long,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                 child: const Icon(Icons.my_location),
               ),
             ],
